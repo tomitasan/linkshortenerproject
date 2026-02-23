@@ -8,6 +8,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { shadcn } from "@clerk/themes";
 import { Button } from "@/components/ui/button";
 import "./globals.css";
 
@@ -23,7 +24,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Link Shortener",
-  description: "A modern link shortening application",
+  description: "A link shortener application with Clerk authentication",
 };
 
 export default function RootLayout({
@@ -32,29 +33,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        theme: shadcn,
+      }}
+      signInFallbackRedirectUrl="/dashboard"
+      signUpFallbackRedirectUrl="/dashboard"
+    >
       <html lang="en" className="dark">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <header className="border-b border-zinc-200 dark:border-zinc-800">
-            <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-              <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
-                Link Shortener
-              </h1>
-              <nav className="flex items-center gap-4">
+          <header className="border-b">
+            <div className="container mx-auto flex items-center justify-between p-4">
+              <h1 className="text-xl font-bold">Link Shortener</h1>
+              <div className="flex items-center gap-4">
                 <SignedOut>
-                  <SignInButton>
-                    <Button variant="ghost">Sign in</Button>
+                  <SignInButton mode="modal">
+                    <Button variant="ghost">Sign In</Button>
                   </SignInButton>
-                  <SignUpButton>
-                    <Button>Sign up</Button>
+                  <SignUpButton mode="modal">
+                    <Button>Sign Up</Button>
                   </SignUpButton>
                 </SignedOut>
                 <SignedIn>
                   <UserButton />
                 </SignedIn>
-              </nav>
+              </div>
             </div>
           </header>
           {children}
