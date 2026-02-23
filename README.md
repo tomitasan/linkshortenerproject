@@ -36,4 +36,14 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
+## Commands to create project, configs and other requirements
+npm config set strict-ssl false
+export NODE_TLS_REJECT_UNAUTHORIZED=0
+
 npx create-next-app@latest [name]
+
+npx shadcn@latest init
+npm install @clerk/nestjs
+npm i drizzle-orm @neondatabase/serverless dotenv
+npm i -D drizzle-kit tsx
+npx shadcn@latest add  button card
