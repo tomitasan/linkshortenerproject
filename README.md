@@ -48,3 +48,6 @@ npm i drizzle-orm @neondatabase/serverless dotenv
 npm i -D drizzle-kit tsx
 npx shadcn@latest add  button card
 npm install @clerk/themes
+
+npx drizzle-kit generate
+npx drizzle-kit push
