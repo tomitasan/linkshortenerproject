@@ -53,7 +53,9 @@ export async function createLink(formData: FormData) { ... }
 
 ### 5. Data Validation with Zod
 
-ALL incoming data MUST be validated using Zod schemas before processing.
+- ALL input data **MUST** be validated using Zod
+- Define Zod schemas for each server action's input
+- Validate at the beginning of every server action
 
 ```typescript
 import { z } from "zod";

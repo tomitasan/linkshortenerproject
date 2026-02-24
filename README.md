@@ -42,12 +42,19 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 npx create-next-app@latest [name]
 
-npx shadcn@latest init
 npm install @clerk/nestjs
 npm i drizzle-orm @neondatabase/serverless dotenv
 npm i -D drizzle-kit tsx
-npx shadcn@latest add  button card
-npm install @clerk/themes
-
 npx drizzle-kit generate
 npx drizzle-kit push
+
+npx shadcn@latest init
+npx shadcn@latest add button card
+npx shadcn@latest add dialog input label
+
+npm install @clerk/themes
+
+npm install zod
+npm install nanoid
+
+

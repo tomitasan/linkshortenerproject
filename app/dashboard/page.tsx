@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getUserLinks } from "@/data/links";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CreateLinkDialog } from "./CreateLinkDialog";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -14,11 +15,14 @@ export default async function DashboardPage() {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Manage your shortened links
-        </p>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Manage your shortened links
+          </p>
+        </div>
+        <CreateLinkDialog />
       </div>
 
       {userLinks.length === 0 ? (
