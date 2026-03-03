@@ -56,6 +56,21 @@ export async function shortCodeExists(shortCode: string): Promise<boolean> {
 }
 
 /**
+ * Gets a link by its short code (for redirects)
+ * @param shortCode - The short code to look up
+ * @returns The link if found, null otherwise
+ */
+export async function getLinkByShortCode(shortCode: string) {
+  const result = await db
+    .select()
+    .from(links)
+    .where(eq(links.shortCode, shortCode))
+    .limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+/**
  * Gets a specific link by ID
  * @param linkId - The link ID
  * @param userId - The Clerk user ID (for authorization)

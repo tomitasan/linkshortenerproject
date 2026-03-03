@@ -18,7 +18,7 @@ interface LinkItemProps {
 
 export function LinkItem({ link }: LinkItemProps) {
   const [copied, setCopied] = useState(false);
-  const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/${link.shortCode}`;
+  const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/l/${link.shortCode}`;
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shortUrl);
