@@ -19,7 +19,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-950 to-zinc-900">
+    <div className="min-h-screen bg-linear-to-b from-zinc-950 to-zinc-900">
       {/* Hero Section */}
       <section className="container mx-auto px-4 pt-20 pb-32">
         <div className="flex flex-col items-center text-center space-y-8">
@@ -143,7 +143,7 @@ export default async function Home() {
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20 pb-32">
-        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+        <Card className="bg-linear-to-r from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="flex flex-col items-center text-center space-y-6 py-16 px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white">
               Ready to Transform Your Links?

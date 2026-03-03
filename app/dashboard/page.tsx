@@ -1,8 +1,9 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getUserLinks } from "@/data/links";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { CreateLinkDialog } from "./CreateLinkDialog";
+import { LinkItem } from "./LinkItem";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -39,36 +40,7 @@ export default async function DashboardPage() {
             Your Links ({userLinks.length})
           </h2>
           {userLinks.map((link) => (
-            <Card key={link.id}>
-              <CardHeader>
-                <CardTitle className="text-lg truncate">
-                  {link.originalUrl}
-                </CardTitle>
-                <CardDescription>
-                  Short code: <span className="font-mono font-semibold">{link.shortCode}</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-                  <div>
-                    <span className="font-medium">Created:</span>{" "}
-                    {new Date(link.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                  <div>
-                    <span className="font-medium">Short URL:</span>{" "}
-                    <span className="font-mono">
-                      {process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/{link.shortCode}
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <LinkItem key={link.id} link={link} />
           ))}
         </div>
       )}

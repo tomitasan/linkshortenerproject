@@ -54,3 +54,78 @@ export async function shortCodeExists(shortCode: string): Promise<boolean> {
   
   return result.length > 0;
 }
+
+/**
+ * Gets a specific link by ID
+ * @param linkId - The link ID
+ * @param userId - The Clerk user ID (for authorization)
+ * @returns The link if found and owned by user, null otherwise
+ */
+export async function getLink(linkId: number, userId: string) {
+  const result = await db
+    .select()
+    .from(links)
+    .where(eq(links.id, linkId))
+    .limit(1);
+  
+  if (result.length === 0 || result[0].userId !== userId) {
+    return null;
+  }
+  
+  return result[0];
+}
+
+/**
+ * Updates a link's URL and/or short code
+ * @param linkId - The link ID to update
+ * @param userId - The Clerk user ID (for authorization)
+ * @param originalUrl - The new original URL
+ * @param shortCode - The new short code (optional)
+ * @returns The updated link or null if not found/unauthorized
+ */
+export async function updateLink(
+  linkId: number,
+  userId: string,
+  originalUrl: string,
+  shortCode?: string
+) {
+  // First verify ownership
+  const existingLink = await getLink(linkId, userId);
+  if (!existingLink) {
+    return null;
+  }
+
+  const updateData: Partial<NewLink> = {
+    originalUrl,
+  };
+
+  // Only update short code if provided
+  if (shortCode) {
+    updateData.shortCode = shortCode;
+  }
+
+  const [updatedLink] = await db
+    .update(links)
+    .set(updateData)
+    .where(eq(links.id, linkId))
+    .returning();
+  
+  return updatedLink;
+}
+
+/**
+ * Deletes a link
+ * @param linkId - The link ID to delete
+ * @param userId - The Clerk user ID (for authorization)
+ * @returns True if deleted successfully, false if not found/unauthorized
+ */
+export async function deleteLink(linkId: number, userId: string): Promise<boolean> {
+  // First verify ownership
+  const existingLink = await getLink(linkId, userId);
+  if (!existingLink) {
+    return false;
+  }
+
+  await db.delete(links).where(eq(links.id, linkId));
+  return true;
+}
