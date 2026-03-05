@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useTransition } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Pencil, Link as LinkIcon } from "lucide-react";
-import { updateLinkAction, type UpdateLinkInput } from "./actions";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Pencil, Link as LinkIcon } from 'lucide-react';
+import { updateLinkAction, type UpdateLinkInput } from './actions';
 
 interface EditLinkDialogProps {
   linkId: number;
@@ -22,7 +22,11 @@ interface EditLinkDialogProps {
   currentShortCode: string;
 }
 
-export function EditLinkDialog({ linkId, currentUrl, currentShortCode }: EditLinkDialogProps) {
+export function EditLinkDialog({
+  linkId,
+  currentUrl,
+  currentShortCode,
+}: EditLinkDialogProps) {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState(currentUrl);
   const [customSlug, setCustomSlug] = useState(currentShortCode);
@@ -128,7 +132,7 @@ export function EditLinkDialog({ linkId, currentUrl, currentShortCode }: EditLin
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? 'Saving...' : 'Save Changes'}
             </Button>
           </DialogFooter>
         </form>

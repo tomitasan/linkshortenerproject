@@ -1,15 +1,15 @@
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-import { getUserLinks } from "@/data/links";
-import { Card, CardContent } from "@/components/ui/card";
-import { CreateLinkDialog } from "./CreateLinkDialog";
-import { LinkItem } from "./LinkItem";
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { getUserLinks } from '@/data/links';
+import { Card, CardContent } from '@/components/ui/card';
+import { CreateLinkDialog } from './CreateLinkDialog';
+import { LinkItem } from './LinkItem';
 
 export default async function DashboardPage() {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect("/");
+    redirect('/');
   }
 
   const userLinks = await getUserLinks(userId);
@@ -19,9 +19,7 @@ export default async function DashboardPage() {
       <div className="mb-8 flex justify-between items-start">
         <div>
           <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Manage your shortened links
-          </p>
+          <p className="text-muted-foreground">Manage your shortened links</p>
         </div>
         <CreateLinkDialog />
       </div>

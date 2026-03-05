@@ -35,8 +35,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-
 ## Commands to create project, configs and other requirements
+
 npm config set strict-ssl false
 export NODE_TLS_REJECT_UNAUTHORIZED=0
 
@@ -56,5 +56,3 @@ npm install @clerk/themes
 
 npm install zod
 npm install nanoid
-
-

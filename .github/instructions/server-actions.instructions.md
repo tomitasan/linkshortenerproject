@@ -18,6 +18,7 @@ All data mutations (create, update, delete operations) MUST be performed through
 - Colocate `actions.ts` in the same directory as the component that calls the action
 
 **Example structure:**
+
 ```
 dashboard/
   page.tsx          # Client component
@@ -37,6 +38,7 @@ Server actions MUST be called from client components. Mark components with `"use
 - Define proper interfaces or types for action parameters
 
 **Good:**
+
 ```typescript
 interface CreateLinkInput {
   url: string;
@@ -47,6 +49,7 @@ export async function createLink(input: CreateLinkInput) { ... }
 ```
 
 **Bad:**
+
 ```typescript
 export async function createLink(formData: FormData) { ... }
 ```
@@ -58,7 +61,7 @@ export async function createLink(formData: FormData) { ... }
 - Validate at the beginning of every server action
 
 ```typescript
-import { z } from "zod";
+import { z } from 'zod';
 
 const createLinkSchema = z.object({
   url: z.string().url(),
@@ -76,15 +79,15 @@ export async function createLink(input: unknown) {
 ALL server actions MUST check for a logged-in user BEFORE performing any database operations.
 
 ```typescript
-import { auth } from "@clerk/nextjs/server";
+import { auth } from '@clerk/nextjs/server';
 
 export async function createLink(input: CreateLinkInput) {
   const { userId } = await auth();
-  
+
   if (!userId) {
-    return { error: "Unauthorized" };
+    return { error: 'Unauthorized' };
   }
-  
+
   // ... continue with database operations
 }
 ```
@@ -92,10 +95,12 @@ export async function createLink(input: CreateLinkInput) {
 ### 7. Error Handling
 
 Server actions MUST NOT throw errors. Instead, return an object with either:
+
 - An `error` property containing the error message
 - A `success` property (and optionally data) indicating successful operation
 
 **Good:**
+
 ```typescript
 export async function createLink(input: CreateLinkInput) {
   try {
@@ -103,15 +108,16 @@ export async function createLink(input: CreateLinkInput) {
     const link = await createLinkInDb(validatedData);
     return { success: true, data: link };
   } catch (error) {
-    return { error: "Failed to create link" };
+    return { error: 'Failed to create link' };
   }
 }
 ```
 
 **Bad:**
+
 ```typescript
 export async function createLink(input: CreateLinkInput) {
-  throw new Error("Something went wrong"); // ❌ Never throw
+  throw new Error('Something went wrong'); // ❌ Never throw
 }
 ```
 
@@ -122,29 +128,31 @@ export async function createLink(input: CreateLinkInput) {
 - Keep server actions focused on validation, authorization, and orchestration
 
 **Good:**
+
 ```typescript
 // actions.ts
-import { createLinkInDb } from "@/data/links";
+import { createLinkInDb } from '@/data/links';
 
 export async function createLink(input: CreateLinkInput) {
   const { userId } = await auth();
-  if (!userId) return { error: "Unauthorized" };
-  
+  if (!userId) return { error: 'Unauthorized' };
+
   try {
     const validatedData = createLinkSchema.parse(input);
     const link = await createLinkInDb({ ...validatedData, userId });
     return { success: true, data: link };
   } catch (error) {
-    return { error: "Failed to create link" };
+    return { error: 'Failed to create link' };
   }
 }
 ```
 
 **Bad:**
+
 ```typescript
 // actions.ts - DO NOT DO THIS
-import { db } from "@/db";
-import { links } from "@/db/schema";
+import { db } from '@/db';
+import { links } from '@/db/schema';
 
 export async function createLink(input: CreateLinkInput) {
   return await db.insert(links).values(input); // ❌ Direct Drizzle query
@@ -167,14 +175,14 @@ Before committing a server action, verify:
 ## Example Server Action
 
 ```typescript
-"use server";
+'use server';
 
-import { z } from "zod";
-import { auth } from "@clerk/nextjs/server";
-import { createLinkInDb, updateLinkInDb } from "@/data/links";
+import { z } from 'zod';
+import { auth } from '@clerk/nextjs/server';
+import { createLinkInDb, updateLinkInDb } from '@/data/links';
 
 const linkSchema = z.object({
-  url: z.string().url("Invalid URL format"),
+  url: z.string().url('Invalid URL format'),
   customSlug: z.string().min(3).optional(),
 });
 
@@ -187,25 +195,25 @@ export async function createLink(input: LinkInput) {
   // 1. Check authentication
   const { userId } = await auth();
   if (!userId) {
-    return { error: "Unauthorized" };
+    return { error: 'Unauthorized' };
   }
 
   // 2. Validate input and perform database operation
   try {
     const validatedData = linkSchema.parse(input);
-    
+
     // 3. Use helper function for database operation
     const link = await createLinkInDb({
       ...validatedData,
       userId,
     });
-    
+
     return { success: true, data: link };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: "Invalid input data" };
+      return { error: 'Invalid input data' };
     }
-    return { error: "Failed to create link" };
+    return { error: 'Failed to create link' };
   }
 }
 ```

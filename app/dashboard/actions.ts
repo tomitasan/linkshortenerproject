@@ -1,22 +1,29 @@
-"use server";
+'use server';
 
-import { auth } from "@clerk/nextjs/server";
-import { z } from "zod";
-import { createLink, shortCodeExists, updateLink, deleteLink, getLink } from "@/data/links";
-import { revalidatePath } from "next/cache";
+import { auth } from '@clerk/nextjs/server';
+import { z } from 'zod';
+import {
+  createLink,
+  shortCodeExists,
+  updateLink,
+  deleteLink,
+  getLink,
+} from '@/data/links';
+import { revalidatePath } from 'next/cache';
 
 // Zod schema for validating input
 const createLinkSchema = z.object({
-  url: z.string().url({ message: "Please enter a valid URL" }),
+  url: z.string().url({ message: 'Please enter a valid URL' }),
   customSlug: z
     .string()
     .regex(/^[a-zA-Z0-9_-]*$/, {
-      message: "Custom slug can only contain letters, numbers, hyphens, and underscores",
+      message:
+        'Custom slug can only contain letters, numbers, hyphens, and underscores',
     })
-    .min(3, { message: "Custom slug must be at least 3 characters" })
-    .max(20, { message: "Custom slug must be 20 characters or less" })
+    .min(3, { message: 'Custom slug must be at least 3 characters' })
+    .max(20, { message: 'Custom slug must be 20 characters or less' })
     .optional()
-    .or(z.literal("")),
+    .or(z.literal('')),
 });
 
 export interface CreateLinkInput {
@@ -40,13 +47,13 @@ export interface CreateLinkResult {
  * @returns Result object with success/error status and optional data
  */
 export async function createLinkAction(
-  input: CreateLinkInput
+  input: CreateLinkInput,
 ): Promise<CreateLinkResult> {
   // Check authentication
   const { userId } = await auth();
 
   if (!userId) {
-    return { error: "Unauthorized. Please sign in to create links." };
+    return { error: 'Unauthorized. Please sign in to create links.' };
   }
 
   // Validate input data
@@ -55,7 +62,7 @@ export async function createLinkAction(
 
     // Clean up custom slug - convert empty string to undefined
     const customSlug =
-      validatedData.customSlug && validatedData.customSlug.trim() !== ""
+      validatedData.customSlug && validatedData.customSlug.trim() !== ''
         ? validatedData.customSlug.trim()
         : undefined;
 
@@ -64,7 +71,8 @@ export async function createLinkAction(
       const exists = await shortCodeExists(customSlug);
       if (exists) {
         return {
-          error: "This custom slug is already taken. Please choose another one.",
+          error:
+            'This custom slug is already taken. Please choose another one.',
         };
       }
     }
@@ -73,7 +81,7 @@ export async function createLinkAction(
     const link = await createLink(userId, validatedData.url, customSlug);
 
     // Revalidate the dashboard page to show the new link
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return {
       success: true,
@@ -91,23 +99,24 @@ export async function createLinkAction(
     }
 
     // Handle other errors
-    console.error("Error creating link:", error);
-    return { error: "Failed to create link. Please try again." };
+    console.error('Error creating link:', error);
+    return { error: 'Failed to create link. Please try again.' };
   }
 }
 
 // Zod schema for update link validation
 const updateLinkSchema = z.object({
-  url: z.string().url({ message: "Please enter a valid URL" }),
+  url: z.string().url({ message: 'Please enter a valid URL' }),
   customSlug: z
     .string()
     .regex(/^[a-zA-Z0-9_-]*$/, {
-      message: "Custom slug can only contain letters, numbers, hyphens, and underscores",
+      message:
+        'Custom slug can only contain letters, numbers, hyphens, and underscores',
     })
-    .min(3, { message: "Custom slug must be at least 3 characters" })
-    .max(20, { message: "Custom slug must be 20 characters or less" })
+    .min(3, { message: 'Custom slug must be at least 3 characters' })
+    .max(20, { message: 'Custom slug must be 20 characters or less' })
     .optional()
-    .or(z.literal("")),
+    .or(z.literal('')),
 });
 
 export interface UpdateLinkInput {
@@ -132,13 +141,13 @@ export interface UpdateLinkResult {
  * @returns Result object with success/error status and optional data
  */
 export async function updateLinkAction(
-  input: UpdateLinkInput
+  input: UpdateLinkInput,
 ): Promise<UpdateLinkResult> {
   // Check authentication
   const { userId } = await auth();
 
   if (!userId) {
-    return { error: "Unauthorized. Please sign in to update links." };
+    return { error: 'Unauthorized. Please sign in to update links.' };
   }
 
   // Validate input data
@@ -151,12 +160,14 @@ export async function updateLinkAction(
     // Get the existing link to check current short code
     const existingLink = await getLink(input.linkId, userId);
     if (!existingLink) {
-      return { error: "Link not found or you don't have permission to update it." };
+      return {
+        error: "Link not found or you don't have permission to update it.",
+      };
     }
 
     // Clean up custom slug - convert empty string to undefined
     const customSlug =
-      validatedData.customSlug && validatedData.customSlug.trim() !== ""
+      validatedData.customSlug && validatedData.customSlug.trim() !== ''
         ? validatedData.customSlug.trim()
         : undefined;
 
@@ -165,7 +176,8 @@ export async function updateLinkAction(
       const exists = await shortCodeExists(customSlug);
       if (exists) {
         return {
-          error: "This custom slug is already taken. Please choose another one.",
+          error:
+            'This custom slug is already taken. Please choose another one.',
         };
       }
     }
@@ -175,15 +187,17 @@ export async function updateLinkAction(
       input.linkId,
       userId,
       validatedData.url,
-      customSlug
+      customSlug,
     );
 
     if (!link) {
-      return { error: "Link not found or you don't have permission to update it." };
+      return {
+        error: "Link not found or you don't have permission to update it.",
+      };
     }
 
     // Revalidate the dashboard page to show the updated link
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return {
       success: true,
@@ -201,8 +215,8 @@ export async function updateLinkAction(
     }
 
     // Handle other errors
-    console.error("Error updating link:", error);
-    return { error: "Failed to update link. Please try again." };
+    console.error('Error updating link:', error);
+    return { error: 'Failed to update link. Please try again.' };
   }
 }
 
@@ -217,13 +231,13 @@ export interface DeleteLinkResult {
  * @returns Result object with success/error status
  */
 export async function deleteLinkAction(
-  linkId: number
+  linkId: number,
 ): Promise<DeleteLinkResult> {
   // Check authentication
   const { userId } = await auth();
 
   if (!userId) {
-    return { error: "Unauthorized. Please sign in to delete links." };
+    return { error: 'Unauthorized. Please sign in to delete links.' };
   }
 
   try {
@@ -231,16 +245,18 @@ export async function deleteLinkAction(
     const deleted = await deleteLink(linkId, userId);
 
     if (!deleted) {
-      return { error: "Link not found or you don't have permission to delete it." };
+      return {
+        error: "Link not found or you don't have permission to delete it.",
+      };
     }
 
     // Revalidate the dashboard page to remove the deleted link
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return { success: true };
   } catch (error) {
     // Handle errors
-    console.error("Error deleting link:", error);
-    return { error: "Failed to delete link. Please try again." };
+    console.error('Error deleting link:', error);
+    return { error: 'Failed to delete link. Please try again.' };
   }
 }

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useTransition } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,16 +10,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Plus, Link as LinkIcon } from "lucide-react";
-import { createLinkAction, type CreateLinkInput } from "./actions";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Plus, Link as LinkIcon } from 'lucide-react';
+import { createLinkAction, type CreateLinkInput } from './actions';
 
 export function CreateLinkDialog() {
   const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState("");
-  const [customSlug, setCustomSlug] = useState("");
+  const [url, setUrl] = useState('');
+  const [customSlug, setCustomSlug] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -39,8 +39,8 @@ export function CreateLinkDialog() {
         setError(result.error);
       } else if (result.success) {
         // Reset form and close dialog
-        setUrl("");
-        setCustomSlug("");
+        setUrl('');
+        setCustomSlug('');
         setError(null);
         setOpen(false);
       }
@@ -116,7 +116,7 @@ export function CreateLinkDialog() {
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Creating..." : "Create Link"}
+              {isPending ? 'Creating...' : 'Create Link'}
             </Button>
           </DialogFooter>
         </form>

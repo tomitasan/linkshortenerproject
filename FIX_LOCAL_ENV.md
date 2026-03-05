@@ -31,6 +31,7 @@ code: 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY'
 ```
 
 This occurred when:
+
 - Running `npx drizzle-kit push` to sync database schema
 - Making database queries from the Next.js application
 - Any connection to Neon database via `@neondatabase/serverless`
@@ -76,6 +77,7 @@ git config --local --list | grep user
 ```
 
 **Output:**
+
 ```
 user.name=Antonio Tomita
 user.email=antonio.tomita@gmail.com
@@ -108,6 +110,7 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0 && npx drizzle-kit push
 ```
 
 **Expected Output:**
+
 ```
 ✓ Pulling schema from database...
 [i] No changes detected
@@ -146,6 +149,7 @@ node test-db-connection.js
 ```
 
 **Expected Output:**
+
 ```
 ✅ Database connection successful!
 Server time: 2026-02-25T02:11:45.561Z
@@ -158,8 +162,9 @@ npm run dev
 ```
 
 **Expected Output:**
+
 ```
-Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' 
+Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0'
 makes TLS connections and HTTPS requests insecure by disabling certificate verification.
 
 ▲ Next.js 16.0.10
@@ -173,7 +178,7 @@ makes TLS connections and HTTPS requests insecure by disabling certificate verif
 ### Security Warning
 
 ```
-Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' 
+Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0'
 makes TLS connections and HTTPS requests insecure by disabling certificate verification.
 ```
 
@@ -240,6 +245,7 @@ Before testing the application, verify:
 ## 🚀 Testing the Application
 
 1. **Start Development Server:**
+
    ```bash
    npm run dev
    ```
@@ -267,11 +273,13 @@ Before testing the application, verify:
 ### Issue: Port 3000 Already in Use
 
 **Error:**
+
 ```
 ⚠ Port 3000 is in use by an unknown process
 ```
 
 **Solution:**
+
 ```bash
 lsof -ti:3000 | xargs kill -9
 ```
@@ -279,11 +287,13 @@ lsof -ti:3000 | xargs kill -9
 ### Issue: Lock File Error
 
 **Error:**
+
 ```
 ⨯ Unable to acquire lock at .next/dev/lock
 ```
 
 **Solution:**
+
 ```bash
 rm -rf .next/dev
 npm run dev
@@ -294,6 +304,7 @@ npm run dev
 **Symptoms:** Page hangs, no error messages
 
 **Solution:**
+
 ```bash
 # Verify NODE_TLS_REJECT_UNAUTHORIZED is set
 grep NODE_TLS_REJECT_UNAUTHORIZED .env
@@ -307,11 +318,13 @@ grep NODE_TLS_REJECT_UNAUTHORIZED .env
 ### Issue: Wrong Git Account
 
 **Verification:**
+
 ```bash
 git config user.email
 ```
 
 **Fix:**
+
 ```bash
 git config --local user.email "antonio.tomita@gmail.com"
 ```
@@ -328,12 +341,12 @@ git config --local user.email "antonio.tomita@gmail.com"
 
 ### Environment Variables Required
 
-| Variable | Purpose | Location |
-|----------|---------|----------|
-| `NODE_TLS_REJECT_UNAUTHORIZED` | SSL workaround | Corporate network |
-| `DATABASE_URL` | Neon PostgreSQL connection | [Neon Console](https://console.neon.tech/) |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key | [Clerk Dashboard](https://dashboard.clerk.com/) |
-| `CLERK_SECRET_KEY` | Clerk secret key | [Clerk Dashboard](https://dashboard.clerk.com/) |
+| Variable                            | Purpose                    | Location                                        |
+| ----------------------------------- | -------------------------- | ----------------------------------------------- |
+| `NODE_TLS_REJECT_UNAUTHORIZED`      | SSL workaround             | Corporate network                               |
+| `DATABASE_URL`                      | Neon PostgreSQL connection | [Neon Console](https://console.neon.tech/)      |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key           | [Clerk Dashboard](https://dashboard.clerk.com/) |
+| `CLERK_SECRET_KEY`                  | Clerk secret key           | [Clerk Dashboard](https://dashboard.clerk.com/) |
 
 ---
 
@@ -388,13 +401,13 @@ If issues persist:
 
 ### Common Error Patterns
 
-| Error | Likely Cause | Solution |
-|-------|--------------|----------|
-| SSL/TLS errors | Corporate network | Add `NODE_TLS_REJECT_UNAUTHORIZED=0` |
-| Port conflicts | Multiple servers | `pkill -f "next dev"` |
-| Lock file errors | Interrupted builds | `rm -rf .next/dev` |
-| Database timeout | Connection failure | Verify `DATABASE_URL` and SSL fix |
-| Auth redirect loops | Clerk misconfiguration | Check Clerk dashboard settings |
+| Error               | Likely Cause           | Solution                             |
+| ------------------- | ---------------------- | ------------------------------------ |
+| SSL/TLS errors      | Corporate network      | Add `NODE_TLS_REJECT_UNAUTHORIZED=0` |
+| Port conflicts      | Multiple servers       | `pkill -f "next dev"`                |
+| Lock file errors    | Interrupted builds     | `rm -rf .next/dev`                   |
+| Database timeout    | Connection failure     | Verify `DATABASE_URL` and SSL fix    |
+| Auth redirect loops | Clerk misconfiguration | Check Clerk dashboard settings       |
 
 ---
 

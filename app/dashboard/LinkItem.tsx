@@ -1,11 +1,17 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { EditLinkDialog } from "./EditLinkDialog";
-import { DeleteLinkDialog } from "./DeleteLinkDialog";
-import { Copy } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { EditLinkDialog } from './EditLinkDialog';
+import { DeleteLinkDialog } from './DeleteLinkDialog';
+import { Copy } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 interface LinkItemProps {
   link: {
@@ -18,7 +24,7 @@ interface LinkItemProps {
 
 export function LinkItem({ link }: LinkItemProps) {
   const [copied, setCopied] = useState(false);
-  const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/l/${link.shortCode}`;
+  const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/l/${link.shortCode}`;
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shortUrl);
@@ -35,7 +41,8 @@ export function LinkItem({ link }: LinkItemProps) {
               {link.originalUrl}
             </CardTitle>
             <CardDescription>
-              Short code: <span className="font-mono font-semibold">{link.shortCode}</span>
+              Short code:{' '}
+              <span className="font-mono font-semibold">{link.shortCode}</span>
             </CardDescription>
           </div>
           <div className="flex gap-2 shrink-0">
@@ -51,20 +58,18 @@ export function LinkItem({ link }: LinkItemProps) {
       <CardContent>
         <div className="flex flex-col gap-2 text-sm text-muted-foreground">
           <div>
-            <span className="font-medium">Created:</span>{" "}
-            {new Date(link.createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
+            <span className="font-medium">Created:</span>{' '}
+            {new Date(link.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
             })}
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-medium">Short URL:</span>{" "}
-            <span className="font-mono flex-1">
-              {shortUrl}
-            </span>
+            <span className="font-medium">Short URL:</span>{' '}
+            <span className="font-mono flex-1">{shortUrl}</span>
             <Button
               variant="ghost"
               size="sm"
@@ -72,7 +77,7 @@ export function LinkItem({ link }: LinkItemProps) {
               className="h-8"
             >
               <Copy className="h-4 w-4 mr-1" />
-              {copied ? "Copied!" : "Copy"}
+              {copied ? 'Copied!' : 'Copy'}
             </Button>
           </div>
         </div>

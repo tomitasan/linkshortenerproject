@@ -27,7 +27,6 @@ This document provides specific guidelines for implementing and working with aut
 ### Redirect Rules
 
 1. **Unauthenticated users accessing `/dashboard`:**
-
    - Redirect to homepage `/` or show Clerk sign-in modal
 
 2. **Authenticated users accessing homepage `/`:**
@@ -37,15 +36,15 @@ This document provides specific guidelines for implementing and working with aut
 
 ```typescript
 // In middleware.ts or page component
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 // Protect dashboard route
 export default async function DashboardPage() {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect("/");
+    redirect('/');
   }
 
   // Dashboard content
@@ -56,7 +55,7 @@ export default async function HomePage() {
   const { userId } = await auth();
 
   if (userId) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   }
 
   // Homepage content
@@ -113,7 +112,7 @@ CLERK_SECRET_KEY=sk_...
 **Client Components:**
 
 ```typescript
-import { useUser, useAuth } from "@clerk/nextjs";
+import { useUser, useAuth } from '@clerk/nextjs';
 
 // Get current user
 const { user, isLoaded, isSignedIn } = useUser();
@@ -125,7 +124,7 @@ const { userId, sessionId } = useAuth();
 **Server Components/Actions:**
 
 ```typescript
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from '@clerk/nextjs/server';
 
 // Get userId
 const { userId } = await auth();
@@ -147,7 +146,7 @@ export async function updateLink(linkId: string, data: UpdateData) {
   const { userId } = await auth();
 
   if (!userId) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
 
   // Verify ownership
@@ -156,7 +155,7 @@ export async function updateLink(linkId: string, data: UpdateData) {
   });
 
   if (link.userId !== userId) {
-    throw new Error("Forbidden");
+    throw new Error('Forbidden');
   }
 
   // Proceed with update
@@ -173,11 +172,9 @@ export async function updateLink(linkId: string, data: UpdateData) {
 ## Troubleshooting
 
 - **Issue:** User not redirecting after sign-in
-
   - **Solution:** Ensure afterSignIn/afterSignUp URLs are configured in Clerk Dashboard
 
 - **Issue:** Auth state not updating
-
   - **Solution:** Check that ClerkProvider wraps entire app in root layout
 
 - **Issue:** Protected route accessible without auth

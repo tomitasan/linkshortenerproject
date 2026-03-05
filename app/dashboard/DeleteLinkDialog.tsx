@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useTransition } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Trash2 } from "lucide-react";
-import { deleteLinkAction } from "./actions";
+} from '@/components/ui/dialog';
+import { Trash2 } from 'lucide-react';
+import { deleteLinkAction } from './actions';
 
 interface DeleteLinkDialogProps {
   linkId: number;
@@ -51,14 +51,17 @@ export function DeleteLinkDialog({ linkId, shortCode }: DeleteLinkDialogProps) {
         <DialogHeader>
           <DialogTitle>Delete Link</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this link? This action cannot be undone.
+            Are you sure you want to delete this link? This action cannot be
+            undone.
           </DialogDescription>
         </DialogHeader>
 
         <div className="py-4">
           <div className="rounded-md bg-muted p-3">
             <p className="text-sm font-medium">Link to be deleted:</p>
-            <p className="text-sm font-mono mt-1 text-muted-foreground">{shortCode}</p>
+            <p className="text-sm font-mono mt-1 text-muted-foreground">
+              {shortCode}
+            </p>
           </div>
 
           {error && (
@@ -83,7 +86,7 @@ export function DeleteLinkDialog({ linkId, shortCode }: DeleteLinkDialogProps) {
             onClick={handleDelete}
             disabled={isPending}
           >
-            {isPending ? "Deleting..." : "Delete Link"}
+            {isPending ? 'Deleting...' : 'Delete Link'}
           </Button>
         </DialogFooter>
       </DialogContent>

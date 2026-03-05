@@ -1,7 +1,7 @@
-import { db } from "@/db";
-import { links, type NewLink } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
-import { nanoid } from "nanoid";
+import { db } from '@/db';
+import { links, type NewLink } from '@/db/schema';
+import { eq, desc } from 'drizzle-orm';
+import { nanoid } from 'nanoid';
 
 /**
  * Fetches all links for a specific user
@@ -26,7 +26,7 @@ export async function getUserLinks(userId: string) {
 export async function createLink(
   userId: string,
   originalUrl: string,
-  customSlug?: string
+  customSlug?: string,
 ) {
   const shortCode = customSlug || nanoid(8);
 
@@ -51,7 +51,7 @@ export async function shortCodeExists(shortCode: string): Promise<boolean> {
     .from(links)
     .where(eq(links.shortCode, shortCode))
     .limit(1);
-  
+
   return result.length > 0;
 }
 
@@ -66,7 +66,7 @@ export async function getLinkByShortCode(shortCode: string) {
     .from(links)
     .where(eq(links.shortCode, shortCode))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -82,11 +82,11 @@ export async function getLink(linkId: number, userId: string) {
     .from(links)
     .where(eq(links.id, linkId))
     .limit(1);
-  
+
   if (result.length === 0 || result[0].userId !== userId) {
     return null;
   }
-  
+
   return result[0];
 }
 
@@ -102,7 +102,7 @@ export async function updateLink(
   linkId: number,
   userId: string,
   originalUrl: string,
-  shortCode?: string
+  shortCode?: string,
 ) {
   // First verify ownership
   const existingLink = await getLink(linkId, userId);
@@ -124,7 +124,7 @@ export async function updateLink(
     .set(updateData)
     .where(eq(links.id, linkId))
     .returning();
-  
+
   return updatedLink;
 }
 
@@ -134,7 +134,10 @@ export async function updateLink(
  * @param userId - The Clerk user ID (for authorization)
  * @returns True if deleted successfully, false if not found/unauthorized
  */
-export async function deleteLink(linkId: number, userId: string): Promise<boolean> {
+export async function deleteLink(
+  linkId: number,
+  userId: string,
+): Promise<boolean> {
   // First verify ownership
   const existingLink = await getLink(linkId, userId);
   if (!existingLink) {

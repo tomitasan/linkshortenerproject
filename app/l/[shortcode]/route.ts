@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getLinkByShortCode } from "@/data/links";
+import { NextRequest, NextResponse } from 'next/server';
+import { getLinkByShortCode } from '@/data/links';
 
 /**
  * GET handler for shortened link redirects
@@ -7,7 +7,7 @@ import { getLinkByShortCode } from "@/data/links";
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ shortcode: string }> }
+  { params }: { params: Promise<{ shortcode: string }> },
 ) {
   const { shortcode } = await params;
 
@@ -16,10 +16,7 @@ export async function GET(
 
   // If link not found, return 404
   if (!link) {
-    return NextResponse.json(
-      { error: "Link not found" },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'Link not found' }, { status: 404 });
   }
 
   // Redirect to the original URL
