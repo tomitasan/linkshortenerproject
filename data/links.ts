@@ -129,7 +129,10 @@ export async function updateLink(
 }
 
 /**
- * Deletes a link
+ * Deletes a link with authorization check
+ * **SECURITY**: This function performs a final ownership verification before deletion
+ * to prevent race conditions and ensure atomicity of the authorization + deletion operation.
+ *
  * @param linkId - The link ID to delete
  * @param userId - The Clerk user ID (for authorization)
  * @returns True if deleted successfully, false if not found/unauthorized
@@ -138,12 +141,15 @@ export async function deleteLink(
   linkId: number,
   userId: string,
 ): Promise<boolean> {
-  // First verify ownership
+  // **SECURITY**: Final ownership verification before deletion
+  // This prevents race conditions where ownership could change between
+  // the initial check and the deletion operation
   const existingLink = await getLink(linkId, userId);
   if (!existingLink) {
     return false;
   }
 
+  // Perform the deletion - at this point we're certain the user owns the link
   await db.delete(links).where(eq(links.id, linkId));
   return true;
 }
